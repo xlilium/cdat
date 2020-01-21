@@ -3,11 +3,7 @@ import sys
 
 from Util import *
 
-def get_conda_dir(workdir, py_ver):
-    #if py_ver.startswith('py2'):
-    #    conda_dir = os.path.join(workdir, 'miniconda2')
-    #else:
-    #    conda_dir = os.path.join(workdir, 'miniconda3')
+def get_conda_dir(workdir):
     conda_dir = os.path.join(workdir, 'miniconda')
     return conda_dir
 
@@ -17,13 +13,12 @@ def install_miniconda(workdir, py_ver):
     else:
         os.mkdir(workdir)
 
-    conda_dir = get_conda_dir(workdir, py_ver)
-    conda_path = os.path.join(conda_dir, 'bin')
+    conda_dir = get_conda_dir(workdir)
 
     if os.path.isdir(conda_dir) == True:
         print("INFO: {dir} already exists".format(dir=conda_dir))
         print("Conda is already installed.")
-        return(SUCCESS, conda_path)
+        return(SUCCESS, conda_dir)
 
 
     url = "https://repo.continuum.io/miniconda"
@@ -60,28 +55,15 @@ def install_miniconda(workdir, py_ver):
         print("FAIL...installing miniconda")
         return(ret_code, None)
 
-    conda_cmd = os.path.join(conda_path, 'conda')
-    cmd = "{c} config --set always_yes yes --set changeps1 no".format(c=conda_cmd)
+    cmds_list = ["conda config --set always_yes yes --set changeps1 no",
+                 "conda config --set anaconda_upload no",
+                 "conda config --add channels conda-forge",
+                 "config --set channel_priority strict"]
     
-    ret_code = run_cmd(cmd, True, False, True)
+    ret_code = run_in_conda_env(conda_dir, 'base', cmds_list, True)
     if ret_code != SUCCESS:
         print('FAILED: ' + cmd)
         return(ret_code, None)
 
-    cmd = "{c} config --set anaconda_upload no".format(c=conda_cmd)
-    ret_code = run_cmd(cmd)
-    if ret_code != SUCCESS:
-        print('FAILED: ' + cmd)
-        return(ret_code, None)
-
-    cmd = "{c} config --add channels conda-forge".format(c=conda_cmd)
-    ret_code = run_cmd(cmd)
-    if ret_code != SUCCESS:
-        print('FAILED: ' + cmd)
-        return(ret_code, None)
-
-    cmd = "{c} config --set channel_priority strict".format(c=conda_cmd)
-    ret_code = run_cmd(cmd)
-
-    print("DEBUG...install_miniconda() returning conda_path: {p}".format(p=conda_path))
-    return(ret_code, conda_path)
+    print("DEBUG...install_miniconda() returning conda_dir: {p}".format(p=conda_dir))
+    return(ret_code, conda_dir)

@@ -6,8 +6,6 @@ aliases:
     command: |
        mkdir -p $WORKDIR
        python scripts/install_miniconda.py -w $WORKDIR -p $PYTHON_VERSION
-       echo "export PATH=$WORKDIR/miniconda/bin:\$PATH" >> ~/.bashrc
-       source ~/.bashrc
 
   - &prep_conda_cache
     name: prep_conda_cache
@@ -19,18 +17,10 @@ aliases:
     command: |
        mkdir -p $WORKDIR
        mv miniconda $WORKDIR/
-       export PATH=$WORKDIR/miniconda/bin:$PATH
+       source $WORKDIR/miniconda/etc/profile.d/conda.sh
+       conda activate base
        conda config --set always_yes yes --set changeps1 no
-       echo "XXX conda --version: "
-       conda --version
-       #
-       # do not do conda update for now, updating from 4.7.10 to 4.7.12 failed
-       # since it tries to remove setuptools
-       # echo "XXX conda update -y -q conda"
-       # conda update -y -q conda
        conda config --set anaconda_upload no
-       # echo "XXX conda --version: "
-       conda --version
 
   - &setup_nightly
     name: setup_nightly
@@ -194,7 +184,7 @@ aliases:
 jobs:
   get_time_stamp:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     environment:
       WORKDIR: /Users/distiller/project/workdir
     steps:
@@ -208,7 +198,7 @@ jobs:
 
   macos_py2_miniconda:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     environment:
       WORKDIR: /Users/distiller/project/workdir
       PYTHON_VERSION: py2.7
@@ -225,7 +215,7 @@ jobs:
 
   macos_py3_miniconda:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     environment:
       WORKDIR: /Users/distiller/project/workdir
       PYTHON_VERSION: py3.7
@@ -279,7 +269,7 @@ jobs:
   # 
   macos_nightly_py2:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     environment:
       WORKDIR: /Users/distiller/project/workdir
       PYTHON_VERSION: py2.7
@@ -304,7 +294,7 @@ jobs:
       - run: *run_cdutil_test
       - run: *run_vcs_test
       - run: *run_vcsaddons_test
-      - run: *run_pcmdi_metrics_test
+      ###- run: *run_pcmdi_metrics_test
       - run: *run_dv3d_test
       - run: *run_wk_test
       - run: *prep_artifacts
@@ -320,7 +310,7 @@ jobs:
 
   macos_nightly_py3.6:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     environment:
       WORKDIR: /Users/distiller/project/workdir
       PYTHON_VERSION: py3.6
@@ -345,7 +335,7 @@ jobs:
       - run: *run_cdutil_test
       - run: *run_vcs_test
       - run: *run_vcsaddons_test
-      - run: *run_pcmdi_metrics_test
+      ###- run: *run_pcmdi_metrics_test
       - run: *run_dv3d_test
       - run: *run_wk_test
       - run: *prep_artifacts
@@ -361,7 +351,7 @@ jobs:
 
   macos_nightly_py3.7:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     environment:
       WORKDIR: /Users/distiller/project/workdir
       PYTHON_VERSION: py3.7
@@ -386,7 +376,7 @@ jobs:
       - run: *run_cdutil_test
       - run: *run_vcs_test
       - run: *run_vcsaddons_test
-      - run: *run_pcmdi_metrics_test
+      ####- run: *run_pcmdi_metrics_test
       - run: *run_dv3d_test
       - run: *run_wk_test
       - run: *prep_artifacts
@@ -427,7 +417,7 @@ jobs:
       - run: *run_cdutil_test
       - run: *run_vcs_test
       - run: *run_vcsaddons_test
-      - run: *run_pcmdi_metrics_test
+      ###- run: *run_pcmdi_metrics_test
       - run: *run_dv3d_test
       - run: *run_wk_test
       - run: *prep_artifacts
@@ -468,7 +458,7 @@ jobs:
       - run: *run_cdutil_test
       - run: *run_vcs_test
       - run: *run_vcsaddons_test
-      - run: *run_pcmdi_metrics_test
+      ###- run: *run_pcmdi_metrics_test
       - run: *run_dv3d_test
       - run: *run_wk_test
       - run: *prep_artifacts
@@ -509,7 +499,7 @@ jobs:
       - run: *run_cdutil_test
       - run: *run_vcs_test
       - run: *run_vcsaddons_test
-      - run: *run_pcmdi_metrics_test
+      ####- run: *run_pcmdi_metrics_test
       - run: *run_dv3d_test
       - run: *run_wk_test
       - run: *prep_artifacts
@@ -557,7 +547,7 @@ jobs:
   #
   macos_cdat_v82_latest_channel_py2:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     environment:
       WORKDIR: /Users/distiller/project/workdir
       PYTHON_VERSION: py2.7
@@ -642,7 +632,7 @@ jobs:
 
   macos_cdat_v82_latest_channel_py3.6:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     environment:
       WORKDIR: /Users/distiller/project/workdir
       PYTHON_VERSION: py3.6
@@ -684,7 +674,7 @@ jobs:
 
   macos_cdat_v82_latest_channel_py3.7:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     environment:
       WORKDIR: /Users/distiller/project/workdir
       PYTHON_VERSION: py3.7
@@ -815,7 +805,7 @@ jobs:
   #
   macos_cdat-v82-nox_py2:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     environment:
       WORKDIR: /Users/distiller/project/workdir
       PYTHON_VERSION: py2.7
@@ -853,7 +843,7 @@ jobs:
 
   macos_cdat-v82-nox_py3.6:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     environment:
       WORKDIR: /Users/distiller/project/workdir
       PYTHON_VERSION: py3.6
@@ -891,7 +881,7 @@ jobs:
 
   macos_cdat-v82-nox_py3.7:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     environment:
       WORKDIR: /Users/distiller/project/workdir
       PYTHON_VERSION: py3.7
@@ -929,7 +919,7 @@ jobs:
 
   macos_cdat-v82_py2:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     environment:
       WORKDIR: /Users/distiller/project/workdir
       PYTHON_VERSION: py2.7
@@ -963,7 +953,7 @@ jobs:
 
   macos_cdat-v82_py3.6:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     environment:
       WORKDIR: /Users/distiller/project/workdir
       PYTHON_VERSION: py3.6
@@ -997,7 +987,7 @@ jobs:
 
   macos_cdat-v82_py3.7:
     macos:
-      xcode: "11.1.0"
+      xcode: "11.3.0"
     environment:
       WORKDIR: /Users/distiller/project/workdir
       PYTHON_VERSION: py3.7
@@ -1358,12 +1348,12 @@ jobs:
 workflows:
   version: 2
   nightly:
-    triggers:
-      - schedule:
-          cron: "0 3 * * *"
-          filters:
-            branches:
-              only: validateNightly
+    #triggers:
+    #  - schedule:
+    #      cron: "0 3 * * *"
+    #      filters:
+    #        branches:
+    #          only: validateNightly
     jobs:
       - get_time_stamp
       - macos_py2_miniconda:
@@ -1389,34 +1379,34 @@ workflows:
           requires:
             - macos_py3_miniconda
    
-      - macos_cdat_v82_latest_channel_py2:
-          requires:
-            - macos_py2_miniconda
-      - macos_cdat_v82_latest_channel_py3.6:
-          requires:
-            - macos_py3_miniconda
-      - macos_cdat_v82_latest_channel_py3.7:
-          requires:
-            - macos_py3_miniconda
+      #- macos_cdat_v82_latest_channel_py2:
+      #    requires:
+      #      - macos_py2_miniconda
+      #- macos_cdat_v82_latest_channel_py3.6:
+      #    requires:
+      #      - macos_py3_miniconda
+      #- macos_cdat_v82_latest_channel_py3.7:
+      #    requires:
+      #      - macos_py3_miniconda
 
-      - macos_cdat-v82-nox_py2:
-          requires:
-            - macos_py2_miniconda
-      - macos_cdat-v82-nox_py3.6:
-          requires:
-            - macos_py3_miniconda
-      - macos_cdat-v82-nox_py3.7:
-          requires:
-            - macos_py3_miniconda
-      - macos_cdat-v82_py2:
-          requires:
-            - macos_py2_miniconda
-      - macos_cdat-v82_py3.6:
-          requires:
-            - macos_py3_miniconda
-      - macos_cdat-v82_py3.7:
-          requires:
-            - macos_py3_miniconda
+      #- macos_cdat-v82-nox_py2:
+      #    requires:
+      #      - macos_py2_miniconda
+      #- macos_cdat-v82-nox_py3.6:
+      #    requires:
+      #      - macos_py3_miniconda
+      #- macos_cdat-v82-nox_py3.7:
+      #    requires:
+      #      - macos_py3_miniconda
+      #- macos_cdat-v82_py2:
+      #    requires:
+      #      - macos_py2_miniconda
+      #- macos_cdat-v82_py3.6:
+      #    requires:
+      #      - macos_py3_miniconda
+      #- macos_cdat-v82_py3.7:
+      #    requires:
+      #      - macos_py3_miniconda
 
       - linux_nightly_py2:      
           requires:
@@ -1428,34 +1418,34 @@ workflows:
           requires:
             - linux_py3_miniconda
 
-      - linux_cdat_v82_latest_channel_py2:
-          requires:
-            - linux_py2_miniconda
-      - linux_cdat_v82_latest_channel_py3.6:
-          requires:
-            - linux_py3_miniconda
-      - linux_cdat_v82_latest_channel_py3.7:
-          requires:
-            - linux_py3_miniconda
+      #- linux_cdat_v82_latest_channel_py2:
+      #    requires:
+      #      - linux_py2_miniconda
+      #- linux_cdat_v82_latest_channel_py3.6:
+      #    requires:
+      #      - linux_py3_miniconda
+      #- linux_cdat_v82_latest_channel_py3.7:
+      #    requires:
+      #      - linux_py3_miniconda
 
-      - linux_cdat-v82-nox_py2:
-          requires:
-            - linux_py2_miniconda
-      - linux_cdat-v82-nox_py3.6:
-          requires:
-            - linux_py3_miniconda
-      - linux_cdat-v82-nox_py3.7:
-          requires:
-            - linux_py3_miniconda
-      - linux_cdat-v82_py2:
-          requires:
-            - linux_py2_miniconda
-      - linux_cdat-v82_py3.6:
-          requires:
-            - linux_py3_miniconda
-      - linux_cdat-v82_py3.7:
-          requires:
-            - linux_py3_miniconda
+      #- linux_cdat-v82-nox_py2:
+      #    requires:
+      #      - linux_py2_miniconda
+      #- linux_cdat-v82-nox_py3.6:
+      #    requires:
+      #      - linux_py3_miniconda
+      #- linux_cdat-v82-nox_py3.7:
+      #    requires:
+      #      - linux_py3_miniconda
+      #- linux_cdat-v82_py2:
+      #    requires:
+      #      - linux_py2_miniconda
+      #- linux_cdat-v82_py3.6:
+      #    requires:
+      #      - linux_py3_miniconda
+      #- linux_cdat-v82_py3.7:
+      #    requires:
+      #      - linux_py3_miniconda
 
       - collect_nightlies_test_results:
           requires:
@@ -1466,26 +1456,26 @@ workflows:
             - linux_nightly_py3.6
             - linux_nightly_py3.7
 
-      - collect_channels_test_results:
-          requires:
-            - macos_cdat_v82_latest_channel_py2
-            - linux_cdat_v82_latest_channel_py2
-            - macos_cdat_v82_latest_channel_py3.6
-            - linux_cdat_v82_latest_channel_py3.6
-            - macos_cdat_v82_latest_channel_py3.7
-            - linux_cdat_v82_latest_channel_py3.7
+      #- collect_channels_test_results:
+      #    requires:
+      #      - macos_cdat_v82_latest_channel_py2
+      #      - linux_cdat_v82_latest_channel_py2
+      #      - macos_cdat_v82_latest_channel_py3.6
+      #      - linux_cdat_v82_latest_channel_py3.6
+      #      - macos_cdat_v82_latest_channel_py3.7
+      #      - linux_cdat_v82_latest_channel_py3.7
 
-      - collect_yamls_test_results:
-          requires:
-            - macos_cdat-v82-nox_py2
-            - macos_cdat-v82-nox_py3.6
-            - macos_cdat-v82-nox_py3.7
-            - macos_cdat-v82_py2
-            - macos_cdat-v82_py3.6
-            - macos_cdat-v82_py3.7
-            - linux_cdat-v82-nox_py2
-            - linux_cdat-v82-nox_py3.6
-            - linux_cdat-v82-nox_py3.7
-            - linux_cdat-v82_py2
-            - linux_cdat-v82_py3.6
-            - linux_cdat-v82_py3.7
+      #- collect_yamls_test_results:
+      #    requires:
+      #      - macos_cdat-v82-nox_py2
+      #      - macos_cdat-v82-nox_py3.6
+      #      - macos_cdat-v82-nox_py3.7
+      #      - macos_cdat-v82_py2
+      #      - macos_cdat-v82_py3.6
+      #      - macos_cdat-v82_py3.7
+      #      - linux_cdat-v82-nox_py2
+      #      - linux_cdat-v82-nox_py3.6
+      #      - linux_cdat-v82-nox_py3.7
+      #      - linux_cdat-v82_py2
+      #      - linux_cdat-v82_py3.6
+      #      - linux_cdat-v82_py3.7

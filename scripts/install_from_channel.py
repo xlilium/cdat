@@ -32,23 +32,23 @@ env_prefix = args.env_prefix
 py_ver = args.py_ver
 conda_label = args.conda_label
 
-status, conda_path = install_miniconda(workdir, py_ver)
+status, conda_dir = install_miniconda(workdir, py_ver)
 if status != SUCCESS:
     sys.exit(FAILURE)
 
-status, env_name = install_from_channel(workdir, conda_path, env_prefix, py_ver, conda_label)
+status, env_name = install_from_channel(workdir, conda_dir, env_prefix, py_ver, conda_label)
 if status != SUCCESS:
     sys.exit(FAILURE)
 
-status = install_packages_for_tests(conda_path, env_name)
+status = install_packages_for_tests(conda_dir, env_name)
 if status != SUCCESS:
     sys.exit(FAILURE)
 
-status = conda_list(conda_path, env_name)
+status = conda_list(conda_dir, env_name)
 if status != SUCCESS:
     sys.exit(FAILURE)
 
-status = conda_env_export(workdir, conda_path, env_name)
+status = conda_env_export(workdir, conda_dir, env_name)
 sys.exit(status)
 
 

@@ -22,7 +22,7 @@ def get_uvcdat_testdata(workdir, repo_name, branch, label):
     ret_code = run_cmd(cmd, True, False, True, repo_dir)
     return ret_code
 
-def run_tests(workdir, conda_path, env_name, repo_name, run_cmds_list):
+def run_tests(workdir, conda_dir, env_name, repo_name, run_cmds_list):
 
     cmds_list = []
     cmd = 'export UVCDAT_ANONYMOUS_LOG=False'
@@ -34,7 +34,7 @@ def run_tests(workdir, conda_path, env_name, repo_name, run_cmds_list):
 
     for cmd in run_cmds_list:
         cmds_list.append(cmd)
-    ret_code = run_in_conda_env(conda_path, env_name, cmds_list)
+    ret_code = run_in_conda_env(conda_dir, env_name, cmds_list)
     return(ret_code)
 
 def get_last_commit(repo_dir):
@@ -54,7 +54,7 @@ def get_last_commit(repo_dir):
         last_commit_info['date_str'] = d
     return(ret_code, last_commit_info)
 
-def setup_tests(workdir, conda_path, repo_name, py_ver, branch='master', label='master', sample_data=False):
+def setup_tests(workdir, repo_name, py_ver, branch='master', label='master', sample_data=False):
 
     ret_code, repo_dir = git_clone_repo(workdir, repo_name, branch, label)
     if ret_code != SUCCESS:

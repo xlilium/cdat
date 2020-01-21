@@ -23,5 +23,5 @@ args = parser.parse_args()
 workdir = args.workdir
 py_ver = args.py_ver
 
-status, conda_path = install_miniconda(workdir, py_ver)
+status, conda_dir = install_miniconda(workdir, py_ver)
 sys.exit(status)

@@ -43,8 +43,7 @@ env_prefix = args.env_prefix
 coverage = args.coverage
 ts = args.testsuite
 
-conda_dir = get_conda_dir(workdir, py_ver)
-conda_path = os.path.join(conda_dir, 'bin')
+conda_dir = get_conda_dir(workdir)
 
 # default run_tests.py invocation command
 # NOTE that if launching run_tests.py with -s option, the html and png artifacts
@@ -65,7 +64,7 @@ if ts == 'vcs' or ts == 'dv3d':
 else:
     sample_data = False
 
-status = setup_tests(workdir, conda_path, ts, py_ver, branch, label, sample_data)
+status = setup_tests(workdir, ts, py_ver, branch, label, sample_data)
 
 if ts == 'cdms':
     cmds_list = ["{cmd} -n 1 --subdir --package".format(cmd=run_tests_cmd)]
@@ -94,7 +93,7 @@ elif ts == 'vcsaddons':
     cmds_list = ["{cmd} -n 1".format(cmd=run_tests_cmd)]
 
 env_name = get_env_name(env_prefix, py_ver)
-status = run_tests(workdir, conda_path, env_name, ts, cmds_list)
+status = run_tests(workdir, conda_dir, env_name, ts, cmds_list)
 sys.exit(status)
 
 

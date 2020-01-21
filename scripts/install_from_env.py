@@ -33,19 +33,19 @@ workdir = args.workdir
 env_prefix = args.env_prefix
 py_ver = args.py_ver
 
-status, conda_path = install_miniconda(workdir, py_ver)
+status, conda_dir = install_miniconda(workdir, py_ver)
 if status != SUCCESS:
     sys.exit(FAILURE)
 
-status, env_name = install_from_env_file(workdir, conda_path, env_prefix, py_ver)
+status, env_name = install_from_env_file(workdir, conda_dir, env_prefix, py_ver)
 if status != SUCCESS:
     sys.exit(FAILURE)
 
-status = install_packages_for_tests(conda_path, env_name)
+status = install_packages_for_tests(conda_dir, env_name)
 if status != SUCCESS:
     sys.exit(FAILURE)
 
-status = conda_list(conda_path, env_name)
+status = conda_list(conda_dir, env_name)
 
 sys.exit(status)
 

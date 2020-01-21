@@ -25,17 +25,15 @@ args = parser.parse_args()
 workdir = args.workdir
 py_ver = args.py_ver
 
-status, conda_path = install_miniconda(workdir, py_ver)
+status, conda_dir = install_miniconda(workdir, py_ver)
 if status != SUCCESS:
     sys.exit(FAILURE)
 
-print("xxx conda_path: {p}".format(p=conda_path))
-
-status, env_name = install_nightly(workdir, conda_path, 'nightly', py_ver)
+status, env_name = install_nightly(workdir, conda_dir, 'nightly', py_ver)
 if status != SUCCESS:
     sys.exit(FAILURE)
 
-status = conda_list(conda_path, env_name)
+status = conda_list(conda_dir, env_name)
 
 sys.exit(status)
 

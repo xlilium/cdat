@@ -42,8 +42,7 @@ env_prefix = args.env_prefix
 branch = args.branch
 label = args.label
 
-conda_dir = get_conda_dir(workdir, py_ver)
-conda_path = os.path.join(conda_dir, 'bin')
+conda_dir = get_conda_dir(workdir)
 
 conda_label = 'nightly'
 
@@ -51,7 +50,7 @@ packages = ["cdms", "cdutil", "genutil", "vcs",
             "pcmdi_metrics", "dv3d", "wk"]
 
 env_name = get_env_name(env_prefix, py_ver)
-ret_code, installed_pkgs_dict = get_packages_version(conda_path, env_name, packages)
+ret_code, installed_pkgs_dict = get_packages_version(conda_dir, env_name, packages)
 
 
 for installed_pkg in installed_pkgs_dict.keys():

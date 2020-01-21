@@ -93,18 +93,18 @@ def git_clone_repo(workdir, repo_name, branch='master', label='master', repo_dir
 
     return(ret_code, repo_dir)
 
-def run_in_conda_env(conda_path, env, cmds_list, verbose=True):
+def run_in_conda_env(conda_dir, env, cmds_list, verbose=True):
     """
-    conda_path - path to comda command
+    conda_dir - path to conda install top directory
     env - conda environment name
     cmds_list - a list of commands
     This function runs all the commands in cmds_list in the specified
     conda environment.
     """
-    add_path = "export PATH={path}:$PATH".format(path=conda_path)
+    source_conda = "source {path}/etc/profile.d/conda.sh".format(path=conda_dir)
     
-    cmds = "{add_path_cmd}; source activate {e}".format(add_path_cmd=add_path,
-                                                        e=env)
+    cmds = "{source_cmd}; conda activate {e}".format(source_cmd=source_conda,
+                                                     e=env)
     for a_cmd in cmds_list:
         cmds = "{existing}; {new}".format(existing=cmds, new=a_cmd)        
     cmds = "{existing}; source deactivate".format(existing=cmds)
@@ -127,14 +127,14 @@ def get_tag_name_of_repo(repo_dir):
 
     return(ret_code, branch)
 
-def run_in_conda_env_capture_output(conda_path, env, cmds_list):
+def run_in_conda_env_capture_output(conda_dir, env, cmds_list):
 
     current_time = time.localtime(time.time())
     time_str = time.strftime("%b.%d.%Y.%H:%M:%S", current_time)
     tmp_file = "/tmp/conda_capture.{curr_time}".format(curr_time=time_str)
 
-    add_path_cmd = "export PATH={path}:$PATH".format(path=conda_path)    
-    activate_cmd = "source activate {env}".format(env=env)
+    source_conda = "source {path}/etc/profile.d/conda.sh".format(path=conda_dir)
+    activate_cmd = "conda activate {env}".format(env=env)
 
     cmds = None
     for a_cmd in cmds_list:
@@ -143,12 +143,12 @@ def run_in_conda_env_capture_output(conda_path, env, cmds_list):
         else:
             cmds = "{existing}; {new_cmd}".format(existing=cmds, new_cmd=a_cmd)
 
-    deactivate_cmd = "source deactivate"
+    deactivate_cmd = "conda deactivate"
 
-    cmd = "bash -c \"{add_path}; {act}; {cmds}; {deact}\"".format(add_path=add_path_cmd,
-                                                                  act=activate_cmd,
-                                                                  cmds=cmds,
-                                                                  deact=deactivate_cmd)
+    cmd = "bash -c \"{source_cmd}; {act}; {cmds}; {deact}\"".format(source_cmd=source_conda,
+                                                                    act=activate_cmd,
+                                                                    cmds=cmds,
+                                                                    deact=deactivate_cmd)
 
     cmd = "{the_cmd} > {output_file}".format(the_cmd=cmd, output_file=tmp_file)
     print("CMD: {cmd}".format(cmd=cmd))
