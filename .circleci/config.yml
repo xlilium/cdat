@@ -1450,10 +1450,10 @@ workflows:
       - collect_nightlies_test_results:
           requires:
             - macos_nightly_py2
-            - macos_nightly_py3.6
+            #- macos_nightly_py3.6
             - macos_nightly_py3.7
             - linux_nightly_py2
-            - linux_nightly_py3.6
+            #- linux_nightly_py3.6
             - linux_nightly_py3.7
 
       #- collect_channels_test_results:
