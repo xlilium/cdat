@@ -65,6 +65,8 @@ def construct_conda_py_str(py_ver):
 
 def install_nightly(workdir, conda_dir, env_prefix, py_ver):
 
+    print("XXX install_nightly(), conda_dir: {p}".format(p=conda_dir))
+
     env_name = get_env_name(env_prefix, py_ver)
 
     env_exists = check_if_env_exists(conda_dir, env_name)
@@ -74,20 +76,20 @@ def install_nightly(workdir, conda_dir, env_prefix, py_ver):
 
     ch1 = "-c cdat/label/nightly -c conda-forge"
     ##ch2 = "-c pcmdi/label/nightly -c pcmdi"
-    ch2 = " "
+
     # REVISIT -- need to add back pcmdi_metrics
     # base_pkgs = "mesalib pcmdi_metrics cia easydev nbsphinx myproxyclient testsrunner coverage pytest"
     base_pkgs = "mesalib cia easydev nbsphinx myproxyclient testsrunner pytest"
-    pkgs = base_pkgs
+    cdat_pkgs = "cdat_info cdtime cdms2 genutil cdutil vtk-cdat dv3d vcs wk vcsaddons"
+    pkgs = "{c} {b}".format(c=cdat_pkgs, b=base_pkgs)
 
     py_str = construct_conda_py_str(py_ver)
         
     cmds_list = ["conda config --add channels cdat/label/nightly",
-                 "conda create -n {e} cdat {pkgs} \"{p}\" {c1} {c2}".format(e=env_name,
-                                                                            pkgs=pkgs,
-                                                                            p=py_str,
-                                                                            c1=ch1,
-                                                                            c2=ch2)
+                 "conda create -n {e} {c1} {pkgs} \"{p}\"".format(e=env_name,
+                                                                  pkgs=pkgs,
+                                                                  p=py_str,
+                                                                  c1=ch1)
                  ]
     ret_code = run_in_conda_env(conda_dir, 'base', cmds_list, True)
     return ret_code, env_name
