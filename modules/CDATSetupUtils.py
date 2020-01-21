@@ -89,7 +89,6 @@ def install_nightly(workdir, conda_dir, env_prefix, py_ver):
                                                                             c1=ch1,
                                                                             c2=ch2)
                  ]
-    print("xxx xxx CMD: {c}".format(c=cmd))
     ret_code = run_in_conda_env(conda_dir, 'base', cmds_list, True)
     return ret_code, env_name
 
