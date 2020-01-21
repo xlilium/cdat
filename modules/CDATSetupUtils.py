@@ -132,8 +132,10 @@ def install_from_channel(workdir, conda_dir, env_prefix, py_ver, conda_label):
 
     py_str = construct_conda_py_str(py_ver)
 
-    cmds_list = ["conda config --add channels cdat/label/{l}".format(l=conda_label),
-                 "conda create -n {n} {channel} \"{p}\" cdat mesalib".format(n=env_name,
+    cmds_list = ["conda config --add channels cdat/label/{l}".format(l=conda_label)]
+    ret_code = run_in_conda_env(conda_dir, 'base', cmds_list, True)
+
+    cmds_list = ["conda create -n {n} {channel} \"{p}\" cdat mesalib".format(n=env_name,
                                                                              channel=channel,
                                                                              p=py_str)]
     ret_code = run_in_conda_env(conda_dir, 'base', cmds_list, True)
