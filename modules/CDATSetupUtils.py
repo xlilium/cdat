@@ -79,7 +79,7 @@ def install_nightly(workdir, conda_dir, env_prefix, py_ver):
 
     # REVISIT -- need to add back pcmdi_metrics
     # base_pkgs = "mesalib pcmdi_metrics cia easydev nbsphinx myproxyclient testsrunner coverage pytest"
-    base_pkgs = "mesalib easydev nbsphinx myproxyclient testsrunner pytest"
+    base_pkgs = "mesalib easydev nbsphinx myproxyclient testsrunner pytest matplotlib"
     cdat_pkgs = "cdat_info cdtime cdms2 genutil cdutil vtk-cdat dv3d vcs wk vcsaddons"
     pkgs = "{c} {b}".format(c=cdat_pkgs, b=base_pkgs)
 
