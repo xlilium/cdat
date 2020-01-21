@@ -107,7 +107,7 @@ def run_in_conda_env(conda_dir, env, cmds_list, verbose=True):
                                                      e=env)
     for a_cmd in cmds_list:
         cmds = "{existing}; {new}".format(existing=cmds, new=a_cmd)        
-    cmds = "{existing}; source deactivate".format(existing=cmds)
+    cmds = "{existing}; conda deactivate".format(existing=cmds)
     cmd = "bash -c \"{the_cmds}\"".format(the_cmds=cmds)
 
     if verbose:
