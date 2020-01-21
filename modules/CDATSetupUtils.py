@@ -86,10 +86,10 @@ def install_nightly(workdir, conda_dir, env_prefix, py_ver):
     py_str = construct_conda_py_str(py_ver)
         
     cmds_list = ["conda config --add channels cdat/label/nightly",
-                 "conda create -n {e} {c1} {pkgs} \"{p}\"".format(e=env_name,
-                                                                  pkgs=pkgs,
-                                                                  p=py_str,
-                                                                  c1=ch1)
+                 "conda create -n {e} {c1} {pkgs} '{p}'".format(e=env_name,
+                                                                pkgs=pkgs,
+                                                                p=py_str,
+                                                                c1=ch1)
                  ]
     ret_code = run_in_conda_env(conda_dir, 'base', cmds_list, True)
     return ret_code, env_name
