@@ -85,7 +85,7 @@ def install_nightly(workdir, conda_dir, env_prefix, py_ver):
 
     py_str = construct_conda_py_str(py_ver)
         
-    cmds_list = ["conda config --add channels cdat/label/nightly",
+    cmds_list = ["conda config --add channels cdat/label/nightly --force",
                  "conda create -n {e} {c1} {pkgs} '{p}'".format(e=env_name,
                                                                 pkgs=pkgs,
                                                                 p=py_str,
